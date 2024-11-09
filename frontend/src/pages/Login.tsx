@@ -31,7 +31,7 @@ export const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 transition-colors duration-300">
         <div className="text-center">
-          <LogIn className="mx-auto h-12 w-12 text-primary-600 dark:text-primary-400" />
+          <LogIn className="mx-auto h-12 w-12 text-gray-600 dark:text-gray-400" />
           <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
             Welcome back
           </h2>
@@ -39,7 +39,7 @@ export const Login = () => {
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+              className="font-medium text-gray-600 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
             >
               Sign up
             </Link>

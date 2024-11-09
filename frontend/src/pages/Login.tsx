@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { login } from "../services/auth";
+import Form from "../components/Form";
+import { LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
   const [formData, setFormData] = useState({
@@ -25,27 +28,45 @@ export const Login = () => {
     }
   };
   return (
-    <div className="h-screen bg-neutral-900 flex flex-col justify-center items-center">
-      <h1 className="text-3xl">Login</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col w-96 space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="p-2 border border-neutral-500"
-          name="email"
-          onChange={handleChange}
-          value={formData.email}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="p-2 border border-neutral-500"
-          name="password"
-          onChange={handleChange}
-          value={formData.password}
-        />
-        <button className="bg-primary-500 text-white p-2 rounded">Login</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 transition-colors duration-300">
+        <div className="text-center">
+          <LogIn className="mx-auto h-12 w-12 text-primary-600 dark:text-primary-400" />
+          <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
+            Welcome back
+          </h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+            >
+              Sign up
+            </Link>
+          </p>
+        </div>
+        <Form onSubmit={handleSubmit}>
+          <Form.Input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            label="Email"
+            required
+          />
+          <Form.Input
+            id="password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            label="Password"
+            required
+          />
+          <Form.Button>Login</Form.Button>
+        </Form>
+      </div>
     </div>
   );
 };

@@ -20,7 +20,6 @@ export function errorHandler(
   _next: NextFunction
 ) {
   if (err instanceof ZodError) {
-    //I want details to be an object
     return res.status(400).json({
       message: "Validation error",
       details: err.errors.reduce((acc, error) => {

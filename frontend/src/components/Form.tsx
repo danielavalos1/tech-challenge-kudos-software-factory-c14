@@ -76,7 +76,61 @@ export const ButtonForm: React.FC<ButtonFormProps> = ({
   );
 };
 
+export interface SelectFormProps {
+  label: string;
+  id: string;
+  name: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: Option[];
+}
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+export const SelectForm: React.FC<SelectFormProps> = ({
+  label,
+  id,
+  name,
+  value,
+  onChange,
+  options,
+}) => {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        {label}
+      </label>
+      <div className="mt-1">
+        <select
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer"
+        >
+          {options.map((option) => (
+            <option
+              className="cursor-pointer"
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+
 Form.Button = ButtonForm;
 Form.Input = InputForm;
+Form.Select = SelectForm;
 
 export default Form;

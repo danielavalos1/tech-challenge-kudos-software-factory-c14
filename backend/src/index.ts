@@ -1,9 +1,10 @@
 //Crear el servidor con express
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 var morgan = require("morgan");
 import path from "path";
 import cookieParser from "cookie-parser";
+import { errorHandler } from "./middlewares/error";
 
 const app = express();
 
@@ -17,10 +18,20 @@ app.use(morgan("dev"));
 app.set("port", process.env.PORT || 5500);
 
 // Routes
+import authRouter from "./routers/auth/router";
+
+app.use("/auth", authRouter);
+
 app.get("/", (_req, res) => {
   res.json({ message: "Hello World" });
 });
 
+// Error handler
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  errorHandler(err, _req, res, _next);
+});
+
+//app.use(errorHandler); por alguna razón no lo acepta así
 
 // Static files
 

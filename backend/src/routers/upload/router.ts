@@ -1,17 +1,18 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import csvParser from "csv-parser";
 import stream from "stream";
+import UserController from "../../controllers/user-controller";
 
 const router = Router();
 
-//TODO: despues de obtener los rows, hay que guardar en la base de datos los registros validos y devolver un mensaje con la cantidad de registros guardados
-//TODO: si hay registros invalidos, devolver un mensaje con la cantidad de registros invalidos, y un array con los registros invalidos, indicando el motivo de la invalides
-
-router.post("/", (req: Request, res: Response) => {
+router.post("/", (req: Request, res: Response, next: NextFunction) => {
   const csvContent = req.body;
+
   if (!csvContent) {
     res.status(400).json({ message: "No file uploaded" });
+    return;
   }
+
   try {
     const results: any[] = [];
 
@@ -23,22 +24,27 @@ router.post("/", (req: Request, res: Response) => {
     readStream
       .pipe(csvParser())
       .on("data", (data) => results.push(data))
-      .on("end", () => {
-        // Enviar la respuesta con los datos procesados
-        res.json({
-          message: "Archivo procesado correctamente",
-          data: results,
-        });
+      .on("end", async () => {
+        try {
+          const result = await UserController.saveUsers(results);
+          return res.json({
+            message: "File processed correctly",
+            ...result,
+          });
+        } catch (error) {
+          console.error("Error saving users", error);
+          return res.status(500).json({ message: "Error saving users", error });
+        }
       })
       .on("error", (error) => {
-        console.error("Error al procesar el archivo CSV", error);
-        res
+        console.error("Error processing CSV file", error);
+        return res
           .status(500)
-          .json({ message: "Error al procesar el archivo CSV", error });
+          .json({ message: "Error processing CSV file", error });
       });
   } catch (error) {
-    console.error("Error en el servidor", error);
-    res.status(500).json({ message: "Error en el servidor", error });
+    console.error("Server error", error);
+    return next(error);
   }
 });
 

@@ -27,14 +27,7 @@ import uploadRouter from "./routers/upload/router";
 
 app.use("/auth", authRouter);
 
-app.use(
-  "/upload",
-  (req, res, next) => {
-    verifyToken(req, res, next);
-  },
-  authorize("admin"),
-  uploadRouter
-);
+app.use("/upload", verifyToken, authorize("admin"), uploadRouter);
 
 app.get("/", (_req, res) => {
   res.json({ message: "Hello World" });

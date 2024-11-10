@@ -2,34 +2,39 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { User } from "@prisma/client";
+import { ApiError } from "./error";
 
 dotenv.config();
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User; // Aquí añades la propiedad 'user', que puede ser del tipo que necesites
+      user?: User; // Añade la propiedad 'user'
     }
   }
 }
 
 const { JWT_SECRET } = process.env;
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+const verifyToken = (req: Request, _res: Response, next: NextFunction) => {
+  const authHeader = req.header("Authorization");
+  const token = authHeader?.replace("Bearer ", "");
+
   if (!token) {
-    return res.status(401).json({ error: "Access denied" });
+    return next(new ApiError("Access denied", 401));
   }
 
   try {
     const verified = jwt.verify(token, JWT_SECRET as string);
+
     if (!verified) {
-      return res.status(401).json({ error: "Access denied" });
+      return next(new ApiError("Access denied", 401));
     }
+
     req.user = verified as User;
-    return next();
+    next();
   } catch (error) {
-    return res.status(400).json({ error: "Invalid token" });
+    next(new ApiError("Invalid token", 400));
   }
 };
 

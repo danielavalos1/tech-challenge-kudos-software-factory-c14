@@ -1,5 +1,3 @@
-// src/types/express.d.ts (o en la raíz del proyecto si no tienes la carpeta @types)
-
 import { User } from "@prisma/client";
 import { Request } from "src/types/express";
 

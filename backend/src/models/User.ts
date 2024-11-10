@@ -16,7 +16,12 @@ export async function createUser(data: Omit<User, "id">): Promise<User> {
   });
 }
 
+export async function getUsers(): Promise<User[]> {
+  return prisma.user.findMany();
+}
+
 export default {
   getUserByEmail,
   createUser,
+  getUsers,
 };

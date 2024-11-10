@@ -17,11 +17,16 @@ interface Errors {
 }
 
 interface Detail {
-  name?: string;
-  email?: string;
-  age?: string;
-  password?: string;
-  role?: string;
+  name?: DetailStructure;
+  email?: DetailStructure;
+  age?: DetailStructure;
+  password?: DetailStructure;
+  role?: DetailStructure;
+}
+
+interface DetailStructure {
+  value: string;
+  error: string;
 }
 
 export async function saveUsers(users: User[]) {
@@ -29,6 +34,13 @@ export async function saveUsers(users: User[]) {
   const failedList: Errors[] = [];
   let successCount = 0;
   let failedCount = 0;
+  const detailKeys: (keyof Detail)[] = [
+    "name",
+    "email",
+    "age",
+    "password",
+    "role",
+  ];
   for (const [index, record] of users.entries()) {
     try {
       const preparedUser = {
@@ -50,13 +62,31 @@ export async function saveUsers(users: User[]) {
       let errorMessage = {} as Detail;
       if (error instanceof ZodError) {
         error.errors.forEach((err) => {
-          if (err.path) {
-            errorMessage[err.path[0] as keyof Detail] = err.message;
+          const pathKey = err.path[0];
+          if (
+            typeof pathKey === "string" &&
+            detailKeys.includes(pathKey as keyof Detail)
+          ) {
+            const key = pathKey as keyof Detail;
+            if (!errorMessage[key]) {
+              errorMessage[key] = {
+                value: record[key] as string,
+                error: err.message,
+              };
+            } else {
+              errorMessage[key] = {
+                value: record[key] as string,
+                error: `${errorMessage[key].error}, ${err.message}`,
+              };
+            }
           }
         });
       } else if (error instanceof Error) {
         if ((error as any).code === "P2002") {
-          errorMessage.email = "Email already exists";
+          errorMessage.email = {
+            value: record.email,
+            error: "Email already exists",
+          };
         }
       }
       failedList.push({ row: index + 1, details: errorMessage });

@@ -34,11 +34,11 @@ export async function login(req: Request, res: Response) {
 export async function signup(req: Request, res: Response) {
   const { email, password, name, age, role } = req.body;
 
-  const existingUser = await UserModel.getUserByEmail(email);
+  /* const existingUser = await UserModel.getUserByEmail(email);
 
   if (existingUser) {
     return res.status(409).json({ message: "User already exists" });
-  }
+  } */
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -49,6 +49,10 @@ export async function signup(req: Request, res: Response) {
     age,
     role,
   } as User);
+
+  if (!user || user instanceof Error) {
+    return res.status(500).json({ message: "Error creating user" });
+  }
 
   const { password: _, ...userWithoutPassword } = user;
 

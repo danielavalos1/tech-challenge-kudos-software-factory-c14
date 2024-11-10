@@ -129,8 +129,46 @@ export const SelectForm: React.FC<SelectFormProps> = ({
   );
 };
 
+interface InputFileProps {
+  label: string;
+  id: string;
+  name: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const InputFile: React.FC<InputFileProps> = ({
+  label,
+  id,
+  name,
+  onChange,
+}) => {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        {label}
+      </label>
+      <div className="mt-1">
+        <input
+          type="file"
+          id={id}
+          name={name}
+          onChange={onChange}
+          accept=".csv"
+          required
+          formEncType="multipart/form-data"
+          className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+    </div>
+  );
+};
+
 Form.Button = ButtonForm;
 Form.Input = InputForm;
 Form.Select = SelectForm;
+Form.InputFile = InputFile;
 
 export default Form;

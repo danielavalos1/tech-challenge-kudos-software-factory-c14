@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/error";
 import verifyToken from "./middlewares/authenticate";
 import { authorize } from "./middlewares/authorize";
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(bodyParser.text({ type: "text/csv", limit: "50mb" }));
 
 // Settings
 app.set("port", process.env.PORT || 5500);

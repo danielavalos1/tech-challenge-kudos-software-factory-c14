@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { signup } from "../services/auth";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 import Form from "../components/Form";
 import { UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
+  const { signup, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -23,18 +26,22 @@ export const Register = () => {
     });
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
     try {
-      const response = await signup(
+      await signup(
         formData.email,
         formData.password,
         formData.name,
         parseInt(formData.age),
         formData.role
       );
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -50,7 +57,7 @@ export const Register = () => {
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Already have an account?{" "}
             <Link
-              to="/register"
+              to="/login"
               className="font-medium text-gray-600 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
             >
               Sign in

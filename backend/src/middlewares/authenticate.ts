@@ -5,6 +5,14 @@ import { User } from "@prisma/client";
 
 dotenv.config();
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User; // Aquí añades la propiedad 'user', que puede ser del tipo que necesites
+    }
+  }
+}
+
 const { JWT_SECRET } = process.env;
 
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {

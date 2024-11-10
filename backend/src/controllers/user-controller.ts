@@ -14,6 +14,7 @@ interface SaveUsersResponse {
 interface Errors {
   row: number;
   details: Detail;
+  record: Omit<User, "password">;
 }
 
 interface Detail {
@@ -89,7 +90,7 @@ export async function saveUsers(users: User[]) {
           };
         }
       }
-      failedList.push({ row: index + 1, details: errorMessage });
+      failedList.push({ row: index + 1, details: errorMessage, record });
     }
   }
   return {

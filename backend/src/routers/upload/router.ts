@@ -28,8 +28,8 @@ router.post("/", (req: Request, res: Response, next: NextFunction) => {
         try {
           const result = await UserController.saveUsers(results);
           return res.json({
-            message: "File processed correctly",
-            ...result,
+            ok: true,
+            data: result,
           });
         } catch (error) {
           console.error("Error saving users", error);

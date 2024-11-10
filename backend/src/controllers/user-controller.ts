@@ -4,9 +4,29 @@ import { userSchema } from "../validations/user";
 import bcrypt from "bcrypt";
 import { ZodError } from "zod";
 
+interface SaveUsersResponse {
+  successCount: number;
+  failedCount: number;
+  success: Omit<User, "password">[];
+  errors: Errors[];
+}
+
+interface Errors {
+  row: number;
+  details: Detail;
+}
+
+interface Detail {
+  name?: string;
+  email?: string;
+  age?: string;
+  password?: string;
+  role?: string;
+}
+
 export async function saveUsers(users: User[]) {
   const successList: Omit<User, "password">[] = [];
-  const failedList: any[] = [];
+  const failedList: Errors[] = [];
   let successCount = 0;
   let failedCount = 0;
   for (const [index, record] of users.entries()) {
@@ -27,25 +47,27 @@ export async function saveUsers(users: User[]) {
       successCount++;
     } catch (error: any) {
       failedCount++;
-      let errorMessage = "Unknown error";
+      let errorMessage = {} as Detail;
       if (error instanceof ZodError) {
-        errorMessage = error.errors.map((err) => err.message).join(", ");
+        error.errors.forEach((err) => {
+          if (err.path) {
+            errorMessage[err.path[0] as keyof Detail] = err.message;
+          }
+        });
       } else if (error instanceof Error) {
         if ((error as any).code === "P2002") {
-          errorMessage = "Email already exists";
-        } else {
-          errorMessage = error.message;
+          errorMessage.email = "Email already exists";
         }
       }
-      failedList.push({ row: index + 1, record, error: errorMessage });
+      failedList.push({ row: index + 1, details: errorMessage });
     }
   }
   return {
     successCount,
     failedCount,
-    successList,
-    failedList,
-  };
+    success: successList,
+    errors: failedList,
+  } as SaveUsersResponse;
 }
 
 export async function getUsers() {

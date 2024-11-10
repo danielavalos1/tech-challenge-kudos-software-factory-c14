@@ -1,4 +1,4 @@
-1. Refactorizar la respuesta de la ruta /upload en backend para que devuelva la siguiente estructura:
+1. [x] Refactorizar la respuesta de la ruta /upload en backend para que devuelva la siguiente estructura:
 
 ```json
 {
@@ -28,11 +28,11 @@
 }
 ```
 
-2. Crear la página para ver los registros exitosos y los registros con errores en frontend.
+2. [] Crear la página para ver los registros exitosos y los registros con errores en frontend.
 
-3. Testing en general.
+3. [] Testing en general.
 
-4. Documentación.
+4. [] Documentación.
    Subir el código fuente a un repositorio Git, incluyendo un `README.md` con instrucciones detalladas de instalación, configuración de la base de datos, y cómo ejecutar la aplicación.
 
    El `README.md` también deberá incluir las URL públicas donde se encuentren deployadas las aplicaciones.

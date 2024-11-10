@@ -12,6 +12,7 @@ export interface User {
 interface Errors {
   row: number;
   details: Detail;
+  record: Omit<User, "password">;
 }
 
 interface Detail {

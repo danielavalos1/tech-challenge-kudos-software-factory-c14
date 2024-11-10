@@ -5,6 +5,8 @@ var morgan = require("morgan");
 import path from "path";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/error";
+import verifyToken from "./middlewares/authenticate";
+import { authorize } from "./middlewares/authorize";
 
 const app = express();
 
@@ -19,8 +21,18 @@ app.set("port", process.env.PORT || 5500);
 
 // Routes
 import authRouter from "./routers/auth/router";
+import uploadRouter from "./routers/upload/router";
 
 app.use("/auth", authRouter);
+
+app.use(
+  "/upload",
+  (req, res, next) => {
+    verifyToken(req, res, next);
+  },
+  authorize("admin"),
+  uploadRouter
+);
 
 app.get("/", (_req, res) => {
   res.json({ message: "Hello World" });

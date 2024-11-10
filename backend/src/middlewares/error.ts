@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
-import { PrismaClientValidationError } from "@prisma/client/runtime/library";
+import {
+  PrismaClientValidationError,
+  PrismaClientKnownRequestError,
+} from "@prisma/client/runtime/library";
 
 export class ApiError extends Error {
   status: number;
@@ -34,6 +37,27 @@ export function errorHandler(
   if (err instanceof PrismaClientValidationError) {
     return res.status(400).json({
       message: "Prisma validation error",
+      details: err.message,
+    });
+  }
+
+  if (err instanceof PrismaClientKnownRequestError) {
+    if (err.code === "P2025") {
+      return res.status(400).json({
+        message: "Invalid data",
+        details: err.message,
+      });
+    }
+
+    if (err.code === "P2002") {
+      return res.status(400).json({
+        message: "Duplicate key",
+        details: err.message,
+      });
+    }
+
+    return res.status(400).json({
+      message: "Prisma request error",
       details: err.message,
     });
   }

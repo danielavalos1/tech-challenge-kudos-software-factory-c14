@@ -18,7 +18,7 @@ Asegúrate de tener instalados las siguientes tecnologías antes de comenzar:
    Abre tu terminal y ejecuta:
 
    ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
+   git clone https://github.com/danielavalos1/tech-challenge-kudos-software-factory-c14.git
    ```
 
 2. **Instalar Dependencias**

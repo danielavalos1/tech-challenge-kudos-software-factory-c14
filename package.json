@@ -18,7 +18,9 @@
     "migrate:dev": "cd backend && npx prisma migrate dev",
     "migrate:reset": "cd backend && npx prisma migrate reset",
     "seed:dev": "cd backend && pnpm run seed",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:frontend": "cd frontend && pnpm run test",
+    "test:backend": "cd backend && pnpm run test",
+    "test": "concurrently \"pnpm run test:backend\" \"pnpm run test:frontend\""
   },
   "keywords": [],
   "author": "",

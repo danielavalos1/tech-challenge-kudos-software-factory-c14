@@ -28,7 +28,9 @@ export async function login(req: Request, res: Response) {
     expiresIn: "1h",
   });
 
-  return res.json({ message: "Logged in", data: userWithoutPassword, token });
+  return res
+    .status(200)
+    .json({ message: "Logged in", data: userWithoutPassword, token });
 }
 
 export async function signup(req: Request, res: Response) {

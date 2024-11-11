@@ -1,15 +1,27 @@
 import React, { useState } from "react";
-import Form from "../components/Form";
 import { useAuth } from "../hooks/useAuth";
+import { MyResponse } from "../types";
+import { UploadForm } from "../components/home/UploadForm";
+import { ListData } from "../components/home/ListData";
 
 export const Home = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [response, setResponse] = useState<MyResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { token, logout } = useAuth();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFile(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file);
+    const text = await file.text();
     try {
       const response = await fetch("http://localhost:5500/upload", {
         method: "POST",
@@ -17,18 +29,20 @@ export const Home = () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "text/csv",
         },
-        body: formData,
+        body: text,
       });
       const data = await response.json();
-      console.log(data);
+      setResponse(data);
       if (data.message === "Invalid token") {
         logout();
       }
       if (data.message === "Access denied") {
         alert("Access denied");
       }
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error al subir el archivo", error);
+      setIsLoading(false);
+      console.error("Error uploading file", error);
     }
   };
 
@@ -41,26 +55,18 @@ export const Home = () => {
           </button>
         </nav>
       </header>
-      <div className="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 transition-colors duration-300">
+      <div className="w-full  p-8 space-y-8 bg-white dark:bg-gray-800 transition-colors duration-300">
         <h1 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
           Data Loading System
         </h1>
-        <div>
-          <Form onSubmit={handleSubmit}>
-            <Form.InputFile
-              id="file"
-              name="file"
-              label="Upload a File"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  setFile(file);
-                }
-              }}
-            />
-            <Form.Button>Upload</Form.Button>
-          </Form>
-        </div>
+        {isLoading && (
+          <p className="text-gray-900 dark:text-white">Loading...</p>
+        )}
+        {response ? (
+          <ListData data={response.data} />
+        ) : (
+          <UploadForm handleChange={handleChange} handleSubmit={handleSubmit} />
+        )}
       </div>
     </div>
   );

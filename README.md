@@ -49,26 +49,26 @@ Asegúrate de tener instalados las siguientes tecnologías antes de comenzar:
 
 3.5 **Configurar la Base de Datos**
 
-    En el archivo `.env` de la carpeta backend, configura las variables de entorno para la conexión a la base de datos.
+En el archivo `.env` de la carpeta backend, configura las variables de entorno para la conexión a la base de datos.
 
-    ```env
-    DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA"
-    ```
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA"
+```
 
-    Reemplaza `USER`, `PASSWORD`, `HOST`, `PORT`, `DATABASE` y `SCHEMA` con los valores correspondientes.
-    Ejemplo:
+Reemplaza `USER`, `PASSWORD`, `HOST`, `PORT`, `DATABASE` y `SCHEMA` con los valores correspondientes.
+Ejemplo:
 
-    ```env
-    DATABASE_URL="postgresql://postgres:123456@localhost:5432/kudos_software_factory?schema=public"
-    ```
+```env
+DATABASE_URL="postgresql://postgres:123456@localhost:5432/kudos_software_factory?schema=public"
+```
 
 4. **Ejecutar Migraciones**
 
-   Ejecuta las migraciones para crear las tablas en la base de datos:
+Ejecuta las migraciones para crear las tablas en la base de datos:
 
-   ```bash
-   npm run migrate:dev # o pnpm run migrate:dev
-   ```
+```bash
+npm run migrate:dev # o pnpm run migrate:dev
+```
 
 5. **Ejecuta el Seeder**
 

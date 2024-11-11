@@ -63,7 +63,7 @@ export const TableCell: React.FC<TableCellProps> = ({
   className,
 }) => {
   const classes = twMerge(
-    "bg-white dark:bg-gray-800 w-full font-mono text-gray-800 dark:text-white",
+    "bg-white dark:bg-gray-800 w-full font-mono text-gray-800 dark:text-white flex flex-col justify-baseline",
     className
   );
   return <div className={classes}>{children}</div>;

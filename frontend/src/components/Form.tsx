@@ -19,11 +19,12 @@ export const Form = ({ children, onSubmit, className }: FormProps) => {
 };
 
 export interface InputFormProps {
-  label: string;
+  label?: string;
   id: string;
   name: string;
   type?: "text" | "password" | "email" | "number";
-  value: string;
+  value: string | number;
+  error?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 }
@@ -36,26 +37,28 @@ export const InputForm: React.FC<InputFormProps> = ({
   value,
   onChange,
   required = false,
+  error,
 }) => {
   return (
-    <div>
-      <label
-        htmlFor={id}
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
-        {label}
-      </label>
-      <div className="mt-1">
-        <input
-          type={type}
-          id={id}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-          className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-        />
-      </div>
+    <div className="flex flex-col gap-y-1">
+      {label && (
+        <label
+          htmlFor={id}
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          {label}
+        </label>
+      )}
+      <input
+        type={type}
+        id={id}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        className=" block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 };

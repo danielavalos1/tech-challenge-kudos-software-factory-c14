@@ -66,14 +66,16 @@ export const InputForm: React.FC<InputFormProps> = ({
 export interface ButtonFormProps {
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 export const ButtonForm: React.FC<ButtonFormProps> = ({
   children,
   className,
+  disabled,
 }) => {
   return (
-    <Button type="submit" className={className}>
+    <Button type="submit" className={className} disabled={disabled}>
       {children}
     </Button>
   );

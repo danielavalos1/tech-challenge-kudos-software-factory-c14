@@ -28,7 +28,7 @@
 }
 ```
 
-2. [] Crear la página para ver los registros exitosos y los registros con errores en frontend.
+2. [x] Crear la página para ver los registros exitosos y los registros con errores en frontend.
 
 3. [] Testing en general.
 

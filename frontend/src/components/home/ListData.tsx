@@ -1,16 +1,19 @@
-// components/MyResponseTable.tsx
-
-import React from "react";
+import React, { useState } from "react";
 import { MyResponse } from "../../types";
 import Table from "../Table";
-import Form from "../Form";
-
+import RetryForm from "./RetryForm";
 interface ListDataProps {
   data: MyResponse["data"];
 }
 
 export const ListData: React.FC<ListDataProps> = ({ data }) => {
-  console.log(data);
+  const [refresh, setRefresh] = useState(0);
+
+  const handleRetrySuccess = () => {
+    setRefresh((prev) => prev + 1);
+    console.log(refresh);
+  };
+
   if (!data) return null;
   return (
     <div className="mt-6 grid grid-cols-2 gap-4">
@@ -39,44 +42,11 @@ export const ListData: React.FC<ListDataProps> = ({ data }) => {
           </Table.RowHeader>
           <Table.Body>
             {data.errors.map((error) => (
-              <Form key={error.row} onSubmit={() => {}}>
-                <Table.Row>
-                  <Table.Cell>{error.row}</Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      type="text"
-                      name="name"
-                      value={error.record.name}
-                      id="name"
-                      onChange={() => {}}
-                      error={error.details.name?.error}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      type="text"
-                      name="email"
-                      value={error.record.email}
-                      id="email"
-                      onChange={() => {}}
-                      error={error.details.email?.error}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      type="number"
-                      name="age"
-                      value={error.record.age || 0}
-                      id="age"
-                      onChange={() => {}}
-                      error={error.details.age?.error}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Button>Retry</Form.Button>
-                  </Table.Cell>
-                </Table.Row>
-              </Form>
+              <RetryForm
+                key={error.row}
+                error={error}
+                onRetrySuccess={handleRetrySuccess}
+              />
             ))}
           </Table.Body>
         </Table>

@@ -111,3 +111,20 @@ npm run migrate:dev # o pnpm run migrate:dev
    Levanta el servidor frontend en el puerto 4173 y puedes acceder a el con `http://localhost:4173`.
 
 Dentro de este repositorio se encuentra un archivo llamado insomia.json que puedes importar en Insomnia para probar las rutas de la API, el usuario que se crea con el seeder es `admin@test.com` y la contraseña es `123456`.
+
+7. **Ejecutar Pruebas**
+
+   Para ejecutar las pruebas, puedes hacerlo de la siguiente manera:
+
+   ```bash
+   npm run test # o pnpm run test
+   ```
+
+   Este comando ejecutará las pruebas de backend y frontend.
+
+   Tambien puedes ejecutar las pruebas por separado:
+
+   ```bash
+    npm run test:backend # o pnpm run test:backend
+    npm run test:frontend # o pnpm run test:frontend
+   ```

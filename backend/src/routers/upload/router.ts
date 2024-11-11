@@ -48,4 +48,18 @@ router.post("/", (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+router.post("/one", async (req: Request, res: Response, next: NextFunction) => {
+  const user = req.body;
+  try {
+    const result = await UserController.saveOne(user);
+    res.json({
+      ok: true,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error saving user", error);
+    return next(error);
+  }
+});
+
 export default router;

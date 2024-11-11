@@ -10,8 +10,6 @@ describe("Auth Router", () => {
         .post("/auth/login")
         .send({ email: "admin@test.com", password: "123456" });
 
-      console.log(response);
-
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("data");
     });

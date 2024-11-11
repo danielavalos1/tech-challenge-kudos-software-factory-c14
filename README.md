@@ -26,7 +26,7 @@ Asegúrate de tener instalados las siguientes tecnologías antes de comenzar:
    Cambia al directorio del proyecto:
 
    ```bash
-   cd tu-repositorio
+   cd tech-challenge-kudos-software-factory-c14
    ```
 
    Instala las dependencias del proyecto:
@@ -95,4 +95,4 @@ Asegúrate de tener instalados las siguientes tecnologías antes de comenzar:
 
    Levanta el servidor frontend en el puerto 4173 y puedes acceder a el con `http://localhost:4173`.
 
-Dentro de este repositorio se encuentra un archivo llamado insomia.json que puedes importar en Insomnia para probar las rutas de la API.
+Dentro de este repositorio se encuentra un archivo llamado insomia.json que puedes importar en Insomnia para probar las rutas de la API, el usuario que se crea con el seeder es `admin@test.com` y la contraseña es `123456`.
